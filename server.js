@@ -11,16 +11,36 @@ const CACHE_TTL = parseInt(process.env.CACHE_TTL) || 600; // 10 minutes
 let redisClient;
 let redisConnected = false;
 
-(async () => {
-  try {
-    redisClient = redis.createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379'
-    });
+ (async () => {
+  if (process.env.REDIS_URL) {
+    try {
+      redisClient = redis.createClient({
+        url: process.env.REDIS_URL,
+        socket: {
+          reconnectStrategy: false // Don't keep retrying
+        }
+      });
 
-    redisClient.on('error', (err) => {
-      console.error('Redis error:', err);
+      redisClient.on('error', (err) => {
+        console.error('⚠️  Redis error:', err.message);
+        redisConnected = false;
+      });
+
+      redisClient.on('connect', () => {
+        console.log('✅ Redis connected');
+        redisConnected = true;
+      });
+
+      await redisClient.connect();
+    } catch (err) {
+      console.error('⚠️  Redis connection failed, running without cache:', err.message);
       redisConnected = false;
-    });
+      redisClient = null;
+    }
+  } else {
+    console.log('⚠️  No REDIS_URL provided, running without cache');
+    redisConnected = false;
+  }
 
     redisClient.on('connect', () => {
       console.log('✅ Redis connected');
