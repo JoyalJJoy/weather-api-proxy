@@ -1,18 +1,16 @@
 {
   "name": "weather-api-proxy",
   "version": "1.0.0",
-  "description": "Weather API proxy with Redis caching for iOS weather app",
+  "description": "Weather API proxy for iOS weather app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node server.js"
   },
-  "keywords": ["weather", "api", "proxy", "redis", "cache"],
+  "keywords": ["weather", "api", "proxy"],
   "author": "JoyalJJoyan",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
-    "redis": "^4.6.11",
     "axios": "^1.6.2",
     "dotenv": "^16.3.1"
   },
