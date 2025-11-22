@@ -227,4 +227,4 @@ MIT
 
 ## Author
 
-JoyalJJoyan
+Joyal J Joy
